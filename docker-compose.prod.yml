@@ -1,0 +1,43 @@
+version: '3.7'
+
+services:
+  app:
+    container_name: teachers-bot
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: build
+    environment:
+      NODE_ENV: production
+    env_file:
+      - .prod.env
+    volumes:
+      - ./src:/app/src
+    command: npm run start
+    depends_on:
+      - db
+    networks:
+      - app
+    ports:
+      - "5003:5000"
+  db:
+    container_name: teachers-bot-db
+    image: postgres:16
+    env_file:
+      - .prod.env
+    environment:
+      PG_DATA: /var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - app
+
+volumes:
+  db-data:
+  pgadmin-data:
+
+networks:
+  app:
+    driver: bridge

@@ -1,0 +1,38 @@
+version: '3.7'
+
+services:
+  app:
+    container_name: pixiki-bot
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    environment:
+      NODE_ENV: development
+    env_file:
+      - .env
+    volumes:
+      - ./src:/app/src
+      - ./nodemon.json:/app/nodemon.json
+    command: npm run start:dev
+    depends_on:
+      - db
+    ports:
+      - "5000:5000"
+  db:
+    container_name: pixiki-bot-db
+    image: postgres:16
+    env_file:
+      - .env
+    environment:
+      PG_DATA: /var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-dev-data:/var/lib/postgresql/data
+
+volumes:
+  db-dev-data:
+
+networks:
+  default: {}

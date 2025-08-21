@@ -1,0 +1,11 @@
+.dockerignore
+Dockerfile
+docker-compose.yml
+docker-compose.prod.yml
+dist
+
+.git
+.gitignore
+.idea
+
+node_modules
