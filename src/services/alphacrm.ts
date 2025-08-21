@@ -176,7 +176,7 @@ class AlphacrmService {
   async createCustomer(params: {
     name: string,
     phone: string,
-    email: string,
+    email?: string,
     note?: string,
   }) {
     try {
@@ -186,7 +186,7 @@ class AlphacrmService {
           is_study: 0,
           legal_type: 1,
           phone: [params.phone],
-          email: [params.email],
+          email: params.email ? [params.email] : undefined,
           note: params.note,
         }, {
           headers: {

@@ -19,7 +19,7 @@ checkScene.enter(async (ctx) => {
 <b>Имя ребенка:</b> ${ctx.scene.session.state.childName}
 <b>Возраст ребенка:</b> ${ctx.scene.session.state.childAge}
 <b>Телефон:</b> ${ctx.scene.session.state.parentPhone}
-<b>Почта:</b> ${ctx.scene.session.state.email}`, 
+${ctx.scene.session.state.email ? `<b>Почта:</b> ${ctx.scene.session.state.email}` : ''}`, 
   Markup.inlineKeyboard([
     [Markup.button.callback('Верно', 'check_correct')],
     [Markup.button.callback('Неверно, внести изменения', 'check_incorrect')],

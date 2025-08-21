@@ -1,8 +1,6 @@
 import { BotContext } from '~/shared/context';
 import { Markup, Scenes } from 'telegraf';
 import { RegistrationForm, RegistrationType } from '~/shared/types/registration';
-import { phone } from 'phone';
-import { EMAIL_SCENE } from './email-scene';
 import { COURSES } from '~/shared/constants';
 import { alphacrmService } from '~/services/alphacrm';
 import { registrationsTable } from '~/db/schema';
@@ -55,7 +53,6 @@ scheduleScene.action(/^lesson:([0-9]+)$/, async (ctx) => {
 
   const customer = await alphacrmService.createCustomer({
     name: state.childName,
-    email: `${state.email} (${state.parentName})`,
     phone: `${state.parentPhone} (${state.parentName})`,
     note: `Возраст: ${state.childAge} лет. Хотят записаться на пробный урок по курсу ${course.name} на ${moment(new Date(lesson.time_from)).format('DD.MM.YYYY в HH:mm')}`
   })
