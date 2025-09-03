@@ -53,6 +53,7 @@ class AlphacrmService {
     this.refreshToken().then(() => {
       this.refreshLessons()
       setInterval(() => this.refreshLessons(), 60 * 60 * 1000);
+      setInterval(() => this.refreshToken(), 30 * 60 * 1000);
     });
   }
 
