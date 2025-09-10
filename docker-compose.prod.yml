@@ -33,7 +33,7 @@ services:
       - db-dev-data:/var/lib/postgresql/data
 
 volumes:
-  db-data:
+  db-dev-data:
   pgadmin-data:
 
 networks:
