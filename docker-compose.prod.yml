@@ -16,8 +16,6 @@ services:
     command: npm run start
     depends_on:
       - db
-    networks:
-      - app
     ports:
       - "5003:5000"
   db:
@@ -37,5 +35,4 @@ volumes:
   pgadmin-data:
 
 networks:
-  app:
-    driver: bridge
+  default: {}
