@@ -6,7 +6,7 @@
   "scripts": {
     "start:dev": "npx nodemon",
     "build": "rm -rf ./build && tsc",
-    "start": "npm run migrate && NODE_PATH=./build node build/index.js",
+    "start": "NODE_PATH=./build node build/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:lint": "eslint ./src",
     "migration:generate": "drizzle-kit generate",
