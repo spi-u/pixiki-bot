@@ -9,7 +9,10 @@
       "target": "ES2021",
       "sourceMap": true,
       "outDir": "./build",
-      // "baseUrl": "./src",
+      "baseUrl": "./src",
+      "paths": {
+        "~/*": ["*"]
+      },
       "resolveJsonModule": true,
       "incremental": true,
       "skipLibCheck": true,
@@ -18,10 +21,7 @@
       "noImplicitAny": false,
       "strictBindCallApply": false,
       "forceConsistentCasingInFileNames": false,
-      "noFallthroughCasesInSwitch": false,
-      "paths": {
-        "~/*": ["./src/*"],
-      }
+      "noFallthroughCasesInSwitch": false
     },
     "include": ["src"]
   }
