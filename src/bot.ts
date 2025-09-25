@@ -86,7 +86,7 @@ class Bot {
           await ctx.sendMessage('Возникла непредвиденная ошибка');
         }
       } catch (e) {
-        console.log(e);
+        logger.error(`Bot error: ${e}`);
       }
     });
 

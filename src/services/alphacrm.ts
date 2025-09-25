@@ -170,7 +170,6 @@ class AlphacrmService {
       logger.info(`Lessons list refreshed, total: ${lessons.length}`);
     } catch (e) {
       logger.error(`AlphacrmService refreshLessons error: ${e}`);
-      throw e;
     }
   }
 
