@@ -18,6 +18,7 @@ services:
       - db
     ports:
       - "5003:5000"
+    restart: unless-stopped  
   db:
     container_name: pixiki-bot-db
     image: postgres:16
@@ -28,7 +29,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - db-dev-data:/var/lib/postgresql/data
+      - db-dev-data:/var/lib/postgresql/data  
 
 volumes:
   db-dev-data:
