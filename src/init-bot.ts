@@ -14,18 +14,21 @@ enum CallbackAction {
   TRIAL_LESSON_REGISTER = 'trial_lesson_register',
 }
 
-export function initBot(bot: Telegraf<BotContext>) {
-  bot.command('start', async (ctx) => {
-    return ctx.replyWithHTML(`👋 <b>Здравствуйте!</b>
+export const startBotText = `👋 <b>Здравствуйте!</b>
 
 Рады приветствовать вас в семейном клубе «PixИки»! 🎉
 С сентября 2025 года стартуют курсы по программированию, робототехнике, 3D-моделированию и творческим направлениям для детей от 4 до 18 лет.
-Выбирайте направление, записывайтесь на <b>бесплатный</b> пробный урок и узнавайте подробнее о курсах!`, 
-    Markup.inlineKeyboard([
-      [Markup.button.callback('Информация о курсах', CallbackAction.INFO)],
-      [Markup.button.callback('Записаться на курс', CallbackAction.COURSE_REGISTER)],
-      [Markup.button.callback('Записаться на пробный урок', CallbackAction.TRIAL_LESSON_REGISTER)],
-    ]));
+Выбирайте направление, записывайтесь на <b>бесплатный</b> пробный урок и узнавайте подробнее о курсах!`
+
+export const startBotKeyboard = Markup.inlineKeyboard([
+  [Markup.button.callback('Информация о курсах', CallbackAction.INFO)],
+  [Markup.button.callback('Записаться на курс', CallbackAction.COURSE_REGISTER)],
+  [Markup.button.callback('Записаться на пробный урок', CallbackAction.TRIAL_LESSON_REGISTER)],
+]);
+
+export function initBot(bot: Telegraf<BotContext>) {
+  bot.command('start', async (ctx) => {
+    return ctx.replyWithHTML(startBotText, startBotKeyboard)
   });
 
   bot.action(CallbackAction.INFO, async (ctx) => {

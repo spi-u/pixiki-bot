@@ -7,7 +7,7 @@ import {
 } from './middlewares';
 import { BotContext } from './shared/context';
 import { logger } from './utils/logger';
-import { initBot } from './init-bot';
+import { initBot, startBotKeyboard, startBotText } from './init-bot';
 import { childNameScene } from './scenes/child-name-scene';
 import { parentNameScene } from './scenes';
 import { emailScene } from './scenes/email-scene';
@@ -59,10 +59,12 @@ class Bot {
         if (['/start'].includes(ctx.message.text) && ctx.session.__scenes?.current) {
           ctx.session.__scenes.current = undefined;
         }
+        if (!ctx.session.__scenes?.current && !['/start', '/registrations'].includes(ctx.message.text)) {
+          await ctx.replyWithHTML(startBotText, startBotKeyboard)
+        }
       }
       return next();
     })
-
     this.bot.use(this.stage.middleware());
     
     initBot(this.bot);
