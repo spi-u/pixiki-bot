@@ -3,7 +3,7 @@ import { Markup, Scenes } from 'telegraf';
 import { RegistrationForm, RegistrationType } from '~/shared/types/registration';
 import { PARENT_NAME_SCENE } from './parent-name-scene';
 import { alphacrmService } from '~/services/alphacrm';
-import { COURSES } from '~/shared/constants';
+import { COURSES, MANAGE_CHAT_ID } from '~/shared/constants';
 import { SCHEDULE_SCENE } from './shedule-scene';
 import { db } from '~/db/connection';
 import { registrationsTable } from '~/db/schema';
@@ -38,12 +38,26 @@ checkScene.action('check_correct', async (ctx) => {
 
   const state = ctx.scene.session.state as Required<RegistrationForm>; 
   
-  const customer = await alphacrmService.createCustomer({
-    name: state.childName,
-    email: `${state.email} (${state.parentName})`,
-    phone: `${state.parentPhone} (${state.parentName})`,
-    note: `Возраст: ${state.childAge} лет. Хотят записаться на курс ${course.name}`
-  })
+  // const customer = await alphacrmService.createCustomer({
+  //   name: state.childName,
+  //   email: `${state.email} (${state.parentName})`,
+  //   phone: `${state.parentPhone} (${state.parentName})`,
+  //   note: `Возраст: ${state.childAge} лет. Хотят записаться на курс ${course.name}`
+  // })
+
+  await ctx.telegram.sendMessage(
+    MANAGE_CHAT_ID, 
+    `🔴 Хотят записаться на курс <b>${course.name}</b>
+
+<i>Родитель:</i> <code>${state.parentName}</code>
+<i>Ребенок:</i> <code>${state.childName}, ${state.childAge} лет</code>
+<i>Номер телефона:</i> <code>${state.parentPhone}</code>
+<i>Почта:</i> <code>${state.email}</code>
+`,
+    {
+      parse_mode: 'HTML',
+    }
+  )
 
   await db.insert(registrationsTable).values({
     tgId: ctx.from.id,
@@ -51,7 +65,7 @@ checkScene.action('check_correct', async (ctx) => {
     data: {
       ...ctx.scene.session.state,
       type: RegistrationType.COURSE,
-      customerId: customer.id,
+      // customerId: customer.id,
     },
   })
 

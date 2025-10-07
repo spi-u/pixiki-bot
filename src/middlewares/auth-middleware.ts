@@ -13,6 +13,8 @@ export function authMiddleware(): middlewareFn<BotContext> {
       return logger.error('Context field from is required');
     }
 
+    console.log(ctx.chat)
+
     let [user] = await db.select().from(usersTable).where(eq(usersTable.tgId, ctx.from.id));
 
     if (!user) {

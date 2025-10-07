@@ -1,7 +1,7 @@
 import { BotContext } from '~/shared/context';
 import { Markup, Scenes } from 'telegraf';
 import { RegistrationForm, RegistrationType } from '~/shared/types/registration';
-import { COURSES } from '~/shared/constants';
+import { COURSES, MANAGE_CHAT_ID } from '~/shared/constants';
 import { alphacrmService } from '~/services/alphacrm';
 import { registrationsTable } from '~/db/schema';
 import { db } from '~/db/connection';
@@ -51,12 +51,25 @@ scheduleScene.action(/^lesson:([0-9]+)$/, async (ctx) => {
     return ctx.scene.enter(SCHEDULE_SCENE, ctx.scene.session.state);
   }
 
-  const customer = await alphacrmService.createCustomer({
-    name: state.childName,
-    phone: `${state.parentPhone} (${state.parentName})`,
-    note: `Возраст: ${state.childAge} лет. Хотят записаться на пробный урок по курсу ${course.name} на ${moment(new Date(lesson.time_from)).format('DD.MM.YYYY в HH:mm')}`
-  })
-  await alphacrmService.addCustomerToLesson(state.selectedLessonId, customer.id)
+  // const customer = await alphacrmService.createCustomer({
+  //   name: state.childName,
+  //   phone: `${state.parentPhone} (${state.parentName})`,
+  //   note: `Возраст: ${state.childAge} лет. Хотят записаться на пробный урок по курсу ${course.name} на ${moment(new Date(lesson.time_from)).format('DD.MM.YYYY в HH:mm')}`
+  // })
+  // await alphacrmService.addCustomerToLesson(state.selectedLessonId, customer.id)
+
+  await ctx.telegram.sendMessage(
+    MANAGE_CHAT_ID, 
+    `🟡 Хотят записаться на пробный урок по <b>${course.name}</b> на <b>${moment(new Date(lesson.time_from)).format('DD.MM.YYYY в HH:mm')}</b>
+
+<i>Родитель:</i> <code>${state.parentName}</code>
+<i>Ребенок:</i> <code>${state.childName}, ${state.childAge} лет</code>
+<i>Номер телефона:</i> <code>${state.parentPhone}</code>
+`,
+    {
+      parse_mode: 'HTML',
+    }
+  )
 
   await db.insert(registrationsTable).values({
     tgId: ctx.from.id,
@@ -65,7 +78,7 @@ scheduleScene.action(/^lesson:([0-9]+)$/, async (ctx) => {
       ...ctx.scene.session.state,
       type: RegistrationType.TRIAL_LESSON,
       selectedLessonTime: lesson.time_from,
-      customerId: customer.id,
+      // customerId: customer.id,
     },
   })
 

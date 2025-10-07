@@ -15,3 +15,5 @@ export const COURSES = [{
   name: 'Цветные нотки',
   subjectIds: [36],
 }];
+
+export const MANAGE_CHAT_ID = process.env.MANAGE_CHAT_ID || "-4734387360";
